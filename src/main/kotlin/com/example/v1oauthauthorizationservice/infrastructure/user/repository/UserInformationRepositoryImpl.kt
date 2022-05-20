@@ -2,6 +2,7 @@ package com.example.v1oauthauthorizationservice.infrastructure.user.repository
 
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.properties.service.ServiceEndpointProperties
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.properties.service.ServiceProperties
+import com.example.v1oauthauthorizationservice.infrastructure.user.exceptions.UserNotFoundException
 import com.example.v1oauthauthorizationservice.infrastructure.user.repository.dtos.UserInformationDto
 import java.util.UUID
 import org.springframework.stereotype.Repository
@@ -27,7 +28,7 @@ class UserInformationRepositoryImpl(
         val requestResult = try {
             restTemplate.getForEntity<UserInformationDto>(getUserInformationUri.toUri())
         } catch (httpClientException: HttpClientErrorException) {
-            TODO("User Not Found Exception을 던져야 함")
+            throw UserNotFoundException(UserNotFoundException.USER_NOT_FOUND_BY_ID)
         }
 
         return requestResult.body!!
@@ -44,7 +45,7 @@ class UserInformationRepositoryImpl(
         val requestResult = try {
             restTemplate.getForEntity<UserInformationDto>(getUserInformationUri.toUri())
         } catch (httpClientException: HttpClientErrorException) {
-            TODO("User Not Found Exception을 던져야 함")
+            throw UserNotFoundException(UserNotFoundException.USER_NOT_FOUND_BY_ACCOUNT_ID)
         }
 
         return requestResult.body!!
