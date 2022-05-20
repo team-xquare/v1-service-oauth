@@ -4,12 +4,12 @@ import com.example.v1oauthauthorizationservice.infrastructure.configuration.prop
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.properties.service.ServiceProperties
 import com.example.v1oauthauthorizationservice.infrastructure.user.exceptions.UserNotFoundException
 import com.example.v1oauthauthorizationservice.infrastructure.user.repository.dtos.UserInformationDto
-import java.util.UUID
 import org.springframework.stereotype.Repository
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForEntity
 import org.springframework.web.util.UriComponentsBuilder
+import java.util.UUID
 
 @Repository
 class UserInformationRepositoryImpl(

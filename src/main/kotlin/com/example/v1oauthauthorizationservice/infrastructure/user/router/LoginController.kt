@@ -1,8 +1,8 @@
 package com.example.v1oauthauthorizationservice.infrastructure.user.router
 
 import com.example.v1oauthauthorizationservice.domain.login.api.LoginApi
-import com.example.v1oauthauthorizationservice.domain.login.api.dtos.TokensApiDto
 import com.example.v1oauthauthorizationservice.domain.login.api.dtos.DomainUserLoginDto
+import com.example.v1oauthauthorizationservice.domain.login.api.dtos.TokensApiDto
 import com.example.v1oauthauthorizationservice.infrastructure.user.router.dtos.UserLoginRequest
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -25,6 +25,5 @@ class LoginController(
 
     @GetMapping("/login")
     fun test() {
-
     }
 }

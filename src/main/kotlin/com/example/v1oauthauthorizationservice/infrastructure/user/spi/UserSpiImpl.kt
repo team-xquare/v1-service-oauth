@@ -5,7 +5,6 @@ import com.example.v1oauthauthorizationservice.domain.login.spi.dtos.UserInforma
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.uuid.UuidUtils.toUUID
 import com.example.v1oauthauthorizationservice.infrastructure.user.repository.UserInformationRepository
 import com.example.v1oauthauthorizationservice.infrastructure.user.repository.dtos.UserInformationDto
-import java.util.UUID
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Repository
 

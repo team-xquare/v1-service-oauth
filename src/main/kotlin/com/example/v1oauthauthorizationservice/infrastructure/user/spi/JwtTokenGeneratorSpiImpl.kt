@@ -5,8 +5,8 @@ import com.example.v1oauthauthorizationservice.domain.login.spi.dtos.TokensSpiDt
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.jwt.BaseTokenProperties
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.jwt.JwtProperties
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.jwt.JwtUtils
-import java.time.LocalDateTime
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class JwtTokenGeneratorSpiImpl(
