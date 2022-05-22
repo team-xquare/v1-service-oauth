@@ -22,8 +22,4 @@ class LoginController(
 
         return loginApi.userLoginWithCredentials(domainUserLoginDto)
     }
-
-    @GetMapping("/login")
-    fun test() {
-    }
 }
