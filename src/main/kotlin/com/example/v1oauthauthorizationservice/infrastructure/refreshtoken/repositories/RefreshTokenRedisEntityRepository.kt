@@ -1,0 +1,6 @@
+package com.example.v1oauthauthorizationservice.infrastructure.refreshtoken.repositories
+
+import com.example.v1oauthauthorizationservice.infrastructure.refreshtoken.RefreshTokenRedisEntity
+import org.springframework.data.repository.CrudRepository
+
+interface RefreshTokenRedisEntityRepository : CrudRepository<RefreshTokenRedisEntity, String>

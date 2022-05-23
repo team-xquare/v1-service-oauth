@@ -1,6 +1,5 @@
 package com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2
 
-import org.hibernate.annotations.GenericGenerator
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -12,6 +11,7 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
 import javax.validation.constraints.NotNull
+import org.hibernate.annotations.GenericGenerator
 
 @Entity
 @Table(
@@ -35,5 +35,5 @@ class RedirectUriEntity(
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    val id: UUID? = null
+    val id: UUID = UUID(0, 0)
 }
