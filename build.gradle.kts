@@ -38,9 +38,6 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-sleuth-zipkin")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
 
-    // mysql
-    runtimeOnly("mysql:mysql-connector-java")
-
     // configuration processor
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
@@ -49,7 +46,6 @@ dependencies {
 
     // oauth
     implementation("org.springframework.security:spring-security-oauth2-authorization-server:0.2.3")
-    implementation("com.nimbusds:nimbus-jose-jwt:9.22")
 
     // jpa
     implementation("org.springframework.data:spring-data-jpa")
