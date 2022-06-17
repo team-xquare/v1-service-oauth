@@ -198,7 +198,6 @@ class CustomOAuth2AuthorizationService(
         authorizationEntityRepository.deleteById(authorizationEntityId)
     }
 
-    @Cacheable(cacheNames = [CacheNames.AUTHORIZATION_CACHE_NAME], key = "#id")
     override fun findById(id: String): OAuth2Authorization {
         val authorizationEntityId = id.toUUID()
 
