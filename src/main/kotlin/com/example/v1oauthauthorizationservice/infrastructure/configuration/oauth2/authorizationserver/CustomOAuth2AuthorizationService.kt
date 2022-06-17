@@ -16,8 +16,10 @@ import com.example.v1oauthauthorizationservice.infrastructure.configuration.oaut
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.exceptions.RegisteredClientNotFoundException
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.repository.RegisteredClientEntityRepository
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.utils.OAuth2AuthorizationBuilder
+import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.utils.OAuth2AuthorizationBuilder.buildAccessTokenEntity
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.utils.OAuth2AuthorizationBuilder.buildAuthorizationCodeEntity
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.utils.OAuth2AuthorizationBuilder.buildAuthorizationEntity
+import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.utils.OAuth2AuthorizationBuilder.buildRefreshTokenEntity
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.utils.OAuth2AuthorizationBuilder.toOAuth2Authorization
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.objectmapper.ObjectMapperConfiguration
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.uuid.UuidUtils.toUUID
@@ -127,7 +129,7 @@ class CustomOAuth2AuthorizationService(
     ) {
         val saveAccessTokenFuture = CompletableFuture.runAsync {
             val accessTokenEntity =
-                OAuth2AuthorizationBuilder.buildAccessTokenEntity(
+                buildAccessTokenEntity(
                     authorizationEntity,
                     oAuth2Authorization.accessToken.token
                 )
@@ -137,7 +139,7 @@ class CustomOAuth2AuthorizationService(
         val saveRefreshTokenFuture = CompletableFuture.runAsync {
             val refreshTokenOrNull = oAuth2Authorization.refreshToken?.token
             refreshTokenOrNull?.let {
-                val refreshTokenEntity = OAuth2AuthorizationBuilder.buildRefreshTokenEntity(authorizationEntity, it)
+                val refreshTokenEntity = buildRefreshTokenEntity(authorizationEntity, it)
                 refreshTokenEntityRepository.save(refreshTokenEntity)
             }
         }
@@ -170,13 +172,11 @@ class CustomOAuth2AuthorizationService(
         accessTokenEntity.updateExpiration(accessToken.issuedAt!!, accessToken.expiresAt!!)
 
         val refreshTokenFuture = CompletableFuture.runAsync {
-            val refreshToken = oAuth2Authorization.refreshToken?.token
-            val refreshTokenEntity = authorizationEntity.refreshTokenEntity
+            val refreshToken = oAuth2Authorization.refreshToken?.token!!
+            val refreshTokenEntity = authorizationEntity.refreshTokenEntity!!
 
-            refreshToken?.let {
-                refreshTokenEntity?.updateTokenValue(it.tokenValue)
-                refreshTokenEntity?.updateExpiration(it.issuedAt!!, it.expiresAt!!)
-            }
+            refreshTokenEntity.updateTokenValue(refreshToken.tokenValue)
+            refreshTokenEntity.updateExpiration(refreshToken.issuedAt!!, refreshToken.expiresAt!!)
         }
 
         val oidcTokenFuture = CompletableFuture.runAsync {
