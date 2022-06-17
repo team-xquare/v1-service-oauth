@@ -69,7 +69,7 @@ class CustomOAuth2AuthorizationService(
 
     private fun saveAuthorizationAndAuthorizationCode(
         oAuth2Authorization: OAuth2Authorization
-    ): OAuth2Authorization {
+    ) {
         val registeredClientId = oAuth2Authorization.registeredClientId.toUUID()
 
         val registeredClientEntity = registeredClientEntityRepository.findByIdOrNull(registeredClientId)
@@ -79,7 +79,7 @@ class CustomOAuth2AuthorizationService(
         val userId = authenticationName.toUUID()
 
         val authorizationEntityToSave = buildAuthorizationEntity(oAuth2Authorization, registeredClientEntity, userId)
-        val savedAuthorizationEntity = authorizationEntityRepository.saveAndFlush(authorizationEntityToSave)
+        val savedAuthorizationEntity = authorizationEntityRepository.save(authorizationEntityToSave)
 
         val authorizationRequest =
             oAuth2Authorization.getAttribute<OAuth2AuthorizationRequest>(OAuth2AuthorizationRequest::class.java.name)
@@ -97,8 +97,6 @@ class CustomOAuth2AuthorizationService(
         authorizationAttributeEntityRepository.saveAll(authorizationAttributeEntities)
 
         authorizationCodeEntityRepository.save(authorizationCodeEntity)
-
-        return oAuth2Authorization
     }
 
     private fun saveTokensIfPresent(
