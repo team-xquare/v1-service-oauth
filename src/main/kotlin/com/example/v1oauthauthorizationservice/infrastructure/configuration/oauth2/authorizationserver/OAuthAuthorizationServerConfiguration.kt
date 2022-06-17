@@ -65,10 +65,10 @@ class OAuthAuthorizationServerConfiguration(
 
         httpSecurity.authorizeRequests()
             .antMatchers(HttpMethod.POST, "/oauth2/token").permitAll()
-            .antMatchers(HttpMethod.POST, "/oauth2/authorize").permitAll()
             .antMatchers("/v1/users/login").permitAll()
             .antMatchers(HttpMethod.GET, "/jwk").permitAll()
             .antMatchers("/tokens").permitAll()
+            .antMatchers(HttpMethod.GET, "/oauth2/authorize").authenticated()
             .anyRequest().authenticated()
 
         httpSecurity
