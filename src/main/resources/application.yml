@@ -16,6 +16,8 @@ service:
   service-url-map:
     user:
       base-url: ${USER_SERVICE_HOST}
+    oauth:
+      base-url: ${OAUTH_SERVICE_HOST}
 oauth:
   token:
     access-token-expiration-by-hour: ${OAUTH_ACCESS_TOKEN_EXP}
