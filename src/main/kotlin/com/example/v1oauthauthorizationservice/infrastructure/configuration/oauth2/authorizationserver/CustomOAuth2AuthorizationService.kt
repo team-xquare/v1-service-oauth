@@ -159,7 +159,7 @@ class CustomOAuth2AuthorizationService(
         saveAccessTokenFuture.get()
         saveRefreshTokenFuture.get()
         saveOidcTokenFuture.get()
-            saveAuthorizationCodeFuture.get()
+        saveAuthorizationCodeFuture.get()
     }
 
     private fun updateTokens(
@@ -171,7 +171,7 @@ class CustomOAuth2AuthorizationService(
         accessTokenEntity.updateTokenValue(accessToken.tokenValue)
         accessTokenEntity.updateExpiration(accessToken.issuedAt!!, accessToken.expiresAt!!)
 
-        CompletableFuture.runAsync {
+        val refreshTokenFuture = CompletableFuture.runAsync {
             val refreshToken = oAuth2Authorization.refreshToken?.token
             val refreshTokenEntity = authorizationEntity.refreshTokenEntity
 
@@ -181,7 +181,7 @@ class CustomOAuth2AuthorizationService(
             }
         }
 
-        CompletableFuture.runAsync {
+        val oidcTokenFuture = CompletableFuture.runAsync {
             val oidcToken = oAuth2Authorization.getToken(OidcIdToken::class.java)?.token
             val oidcTokenEntity = authorizationEntity.oidcIdTokenEntity
 
@@ -190,6 +190,9 @@ class CustomOAuth2AuthorizationService(
                 oidcTokenEntity?.updateExpiration(it.issuedAt!!, it.expiresAt!!)
             }
         }
+
+        refreshTokenFuture.get()
+        oidcTokenFuture.get()
     }
 
     override fun remove(authorization: OAuth2Authorization) {
