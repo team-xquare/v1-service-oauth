@@ -32,7 +32,7 @@ class OAuthAuthorizationServerConfiguration(
     @Order(Ordered.HIGHEST_PRECEDENCE)
     fun providerSettings(serviceProperties: ServiceProperties): ProviderSettings {
         return ProviderSettings.builder()
-            .issuer("http://localhost:8080")
+            .issuer("http://localhost:8080") // TODO 서비스 주소
             .jwkSetEndpoint("/jwks")
             .oidcUserInfoEndpoint("/oauth2/userinfo")
             .tokenEndpoint("/oauth2/token")
