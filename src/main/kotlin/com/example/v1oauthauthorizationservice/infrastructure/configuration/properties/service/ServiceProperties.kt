@@ -13,6 +13,5 @@ class ServiceProperties(
 
 @ConstructorBinding
 class ServiceEndpointProperties(
-    val baseUrl: String,
-    val endpointMap: HashMap<String, String>
+    val baseUrl: String
 )

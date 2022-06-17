@@ -28,10 +28,7 @@ spring:
 service:
   service-url-map:
     user:
-      base-url: http://localhost:8081
-      endpoint-map:
-        userinfo-by-account-id-endpoint: /users/account-id/{accountId}
-        userinfo-by-id-endpoint: /users/id/{userId}
+      base-url: ${USER_SERVICE_HOST}
 oauth:
   token:
     access-token-expiration-by-hour: ${OAUTH_ACCESS_TOKEN_EXP}
