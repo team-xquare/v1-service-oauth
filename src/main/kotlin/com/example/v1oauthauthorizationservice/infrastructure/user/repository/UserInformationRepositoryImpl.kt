@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForEntity
 import org.springframework.web.util.UriComponentsBuilder
 import java.util.UUID
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 
 @Repository
 class UserInformationRepositoryImpl(

@@ -5,4 +5,3 @@ import com.example.v1oauthauthorizationservice.domain.exception.BaseException
 class IllegalUuidStringException(
     errorMessage: String
 ) : BaseException(errorMessage, 400)
-
