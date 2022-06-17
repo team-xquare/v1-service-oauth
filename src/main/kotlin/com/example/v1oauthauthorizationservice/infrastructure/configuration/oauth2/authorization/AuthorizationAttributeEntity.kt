@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull
 @Entity
 @TypeDef(name = "json", typeClass = JsonStringType::class)
 @Table(name = "tbl_authorization_attribute")
-@Cacheable
 class AuthorizationAttributeEntity(
     @field:NotNull
     val attributeKey: String,
