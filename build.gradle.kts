@@ -23,9 +23,6 @@ dependencies {
     // jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    // amqp
-    implementation("org.springframework.boot:spring-boot-starter-amqp")
-
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -33,10 +30,6 @@ dependencies {
     // kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
-    // sleuth
-    implementation("org.springframework.cloud:spring-cloud-sleuth-zipkin")
-    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
 
     // configuration processor
     kapt("org.springframework.boot:spring-boot-configuration-processor")

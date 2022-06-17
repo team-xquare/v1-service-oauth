@@ -13,18 +13,6 @@ spring:
       ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
-  sleuth:
-    sampler:
-      probability: 1
-  zipkin:
-    base-url: ${ZIPKIN_URL}
-    sender:
-      type: rabbit
-  rabbitmq:
-    host: ${RABBIT_MQ_HOST}
-    port: ${RABBIT_MQ_PORT}
-    username: ${RABBIT_MQ_USERNAME}
-    password: ${RABBIT_MQ_PASSWORD}
 service:
   service-url-map:
     user:
