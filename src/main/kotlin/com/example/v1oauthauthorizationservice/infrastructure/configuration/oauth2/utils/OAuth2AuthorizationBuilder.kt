@@ -57,7 +57,7 @@ object OAuth2AuthorizationBuilder {
                     it.tokenValue,
                     it.issuedAt,
                     it.expiredAt,
-                    mutableMapOf("test" to "test") as Map<String, Any>?
+                    mutableMapOf()
                 )
             )
         }
