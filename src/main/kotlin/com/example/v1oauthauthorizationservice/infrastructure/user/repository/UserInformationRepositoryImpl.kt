@@ -22,7 +22,7 @@ class UserInformationRepositoryImpl(
         val getUserInformationPathVariable = mutableMapOf("userId" to userId)
 
         val getUserInformationUri = userServiceUriMap.getBasicUserServiceUri()
-            .path(userServiceUriMap.endpointMap["userinfo-by-id-endpoint"]!!)
+            .path("/users/id/{userId}")
             .buildAndExpand(getUserInformationPathVariable)
 
         val requestResult = try {
@@ -39,7 +39,7 @@ class UserInformationRepositoryImpl(
         val getUserInformationPathVariable = mutableMapOf("accountId" to accountId)
 
         val getUserInformationUri = userServiceUriMap.getBasicUserServiceUri()
-            .path(userServiceUriMap.endpointMap["userinfo-by-account-id-endpoint"]!!)
+            .path("/users/account-id/{accountId}")
             .buildAndExpand(getUserInformationPathVariable)
 
         val requestResult = try {

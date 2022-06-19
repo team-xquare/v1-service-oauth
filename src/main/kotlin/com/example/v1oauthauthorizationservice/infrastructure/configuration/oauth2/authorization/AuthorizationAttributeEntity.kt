@@ -6,7 +6,6 @@ import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
 import java.util.UUID
-import javax.persistence.Cacheable
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -20,7 +19,6 @@ import javax.validation.constraints.NotNull
 @Entity
 @TypeDef(name = "json", typeClass = JsonStringType::class)
 @Table(name = "tbl_authorization_attribute")
-@Cacheable
 class AuthorizationAttributeEntity(
     @field:NotNull
     val attributeKey: String,
