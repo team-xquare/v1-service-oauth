@@ -34,9 +34,4 @@ class OAuthController(
     fun regenerateSecret(@PathVariable("client-id") clientId: String): RegenerateSecretResponse {
         return OAuthApi.regenerateSecret(clientId)
     }
-
-    @GetMapping("/token")
-    fun generateCode(@PathVariable("client-id") clientId: String): RegenerateSecretResponse {
-        return OAuthApi.regenerateSecret(clientId)
-    }
 }

@@ -39,14 +39,15 @@ class SecurityConfiguration {
         httpSecurity
             .authorizeHttpRequests { authorize ->
                 authorize
+                    .requestMatchers(HttpMethod.POST, "/oauth2/client").authenticated()
+                    .requestMatchers(HttpMethod.PATCH, "/oauth2/client/{client-id}").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/oauth2/client/{client-id}/secret").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/oauth2/client").authenticated()
                     .requestMatchers(HttpMethod.POST, "/oauth2/token").permitAll()
-                    .requestMatchers("/v1/users/login").permitAll()
                     .requestMatchers(HttpMethod.GET, "/jwk").permitAll()
-                    .requestMatchers("/tokens").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/oauth2/authorize").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/oauth2/client").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/oauth2/authorize").authenticated()
                     .requestMatchers(HttpMethod.GET, "/oauth2/userinfo").permitAll()
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
             }
 
         return httpSecurity.build()
