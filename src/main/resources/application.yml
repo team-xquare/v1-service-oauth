@@ -1,24 +1,17 @@
 spring:
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-  datasource:
-    url: jdbc:${DBMS}://${DB_HOST}:3306/${DB_NAME}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-service:
-  service-url-map:
-    user:
-      base-url: ${USER_SERVICE_HOST}
-    oauth:
-      base-url: ${OAUTH_SERVICE_HOST}
-oauth:
-  token:
-    access-token-expiration-by-hour: ${OAUTH_ACCESS_TOKEN_EXP}
-    refresh-token-expiration-by-day: ${OAUTH_REFRESH_TOKEN_EXP}
+  profiles:
+    active: ${PROFILE}
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: Asia/Seoul
+  application:
+    name: v1-oauth-service
+  config:
+    import: optional:configserver:https://api.xquare.app/cloud-config/
+  cloud:
+    config:
+      username: ${CLOUD_CONFIG_USERNAME}
+      password: ${CLOUD_CONFIG_PASSWORD}
+server:
+  shutdown: graceful
