@@ -12,6 +12,6 @@ interface UserClient {
     @GetMapping("/users/id/{userId}")
     fun getUserByUserId(@PathVariable("userId") userId: UUID): UserInformationDto
 
-    @GetMapping("/account-id/{accountId}")
+    @GetMapping("/users/account-id/{accountId}")
     fun getUserByAccountId(@PathVariable("accountId") accountId: String): UserInformationDto
 }
