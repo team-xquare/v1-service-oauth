@@ -41,6 +41,7 @@ dependencies {
     // oauth
     implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.0.3")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.security:spring-security-oauth2-client")
 
     // jpa
     implementation("org.springframework.data:spring-data-jpa")
