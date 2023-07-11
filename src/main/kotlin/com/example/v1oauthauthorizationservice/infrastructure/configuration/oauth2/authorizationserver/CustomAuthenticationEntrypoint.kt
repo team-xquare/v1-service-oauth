@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 class CustomAuthenticationEntrypoint(
     private val objectMapper: ObjectMapper
@@ -19,6 +19,7 @@ class CustomAuthenticationEntrypoint(
         response: HttpServletResponse,
         authException: AuthenticationException
     ) {
+        authException.printStackTrace()
         when (val exception = authException.convertToBaseExceptionIfPossible()) {
             is InsufficientAuthenticationException -> FailedToAuthorizeException(FailedToAuthorizeException.FULL_AUTHORIZATION_NEEDED)
                 .sendErrorResponse(response, objectMapper)

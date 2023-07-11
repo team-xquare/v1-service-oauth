@@ -24,13 +24,12 @@ import com.example.v1oauthauthorizationservice.infrastructure.configuration.oaut
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.objectmapper.ObjectMapperConfiguration
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.uuid.UuidUtils.toUUID
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.annotation.Resource
 import java.util.concurrent.CompletableFuture
-import javax.annotation.Resource
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.oauth2.core.OAuth2AuthorizationCode
-import org.springframework.security.oauth2.core.OAuth2TokenType
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.CODE
@@ -38,7 +37,9 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.RE
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.STATE
 import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -61,7 +62,6 @@ class CustomOAuth2AuthorizationService(
     override fun save(authorization: OAuth2Authorization) {
         val authorizationEntityId = authorization.id.toUUID()
         val authorizationEntity = authorizationEntityRepository.findByIdOrNull(authorizationEntityId)
-
         if (authorizationEntity == null) {
             saveAuthorizationAndAuthorizationCode(authorization)
         } else {
@@ -127,39 +127,29 @@ class CustomOAuth2AuthorizationService(
         oAuth2Authorization: OAuth2Authorization,
         authorizationEntity: AuthorizationEntity
     ) {
-        val saveAccessTokenFuture = CompletableFuture.runAsync {
+
             val accessTokenEntity =
                 buildAccessTokenEntity(
                     authorizationEntity,
                     oAuth2Authorization.accessToken.token
                 )
             accessTokenEntityRepository.save(accessTokenEntity)
-        }
 
-        val saveRefreshTokenFuture = CompletableFuture.runAsync {
             val refreshTokenOrNull = oAuth2Authorization.refreshToken?.token
             refreshTokenOrNull?.let {
                 val refreshTokenEntity = buildRefreshTokenEntity(authorizationEntity, it)
                 refreshTokenEntityRepository.save(refreshTokenEntity)
             }
-        }
 
-        val saveOidcTokenFuture = CompletableFuture.runAsync {
             val oidcTokenOrNull = oAuth2Authorization.getToken(OidcIdToken::class.java)?.token
             oidcTokenOrNull?.let {
                 val oidcTokenEntity = OAuth2AuthorizationBuilder.buildOidcTokenEntity(authorizationEntity, it)
                 oidcIdTokenEntityRepository.save(oidcTokenEntity)
             }
-        }
 
-        val saveAuthorizationCodeFuture = CompletableFuture.runAsync {
+
             authorizationCodeEntityRepository.deleteById(authorizationEntity.id)
-        }
 
-        saveAccessTokenFuture.get()
-        saveRefreshTokenFuture.get()
-        saveOidcTokenFuture.get()
-        saveAuthorizationCodeFuture.get()
     }
 
     private fun updateTokens(
