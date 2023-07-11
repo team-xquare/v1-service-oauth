@@ -7,5 +7,6 @@ class RegisteredClientNotFoundException(
 ) : BaseException(errorMessage, 404) {
     companion object {
         const val ID_NOT_FOUND_MESSAGE = "Registered Client By This Id Not Found Exception"
+        const val CLIENT_ID_NOT_FOUND_MESSAGE = "Registered Client By This Client Id Not Found Exception"
     }
 }
