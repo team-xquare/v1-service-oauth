@@ -22,10 +22,8 @@ class CustomAuthenticationEntrypoint(
         authException.printStackTrace()
         when (val exception = authException.convertToBaseExceptionIfPossible()) {
             is InsufficientAuthenticationException -> FailedToAuthorizeException(FailedToAuthorizeException.FULL_AUTHORIZATION_NEEDED)
-                .sendErrorResponse(response, objectMapper)
             is AuthenticationException -> FailedToAuthorizeException(FailedToAuthorizeException.AUTHORIZATION_FAILED_EXCEPTION)
-                .sendErrorResponse(response, objectMapper)
-            else -> InternalServerError(exception.message).sendErrorResponse(response, objectMapper)
-        }
+            else -> InternalServerError(exception.message)
+        }.sendErrorResponse(response, objectMapper)
     }
 }

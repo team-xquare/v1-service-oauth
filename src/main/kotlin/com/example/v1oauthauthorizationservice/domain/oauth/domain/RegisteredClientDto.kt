@@ -9,7 +9,7 @@ data class RegisteredClientDto(
     val userId: UUID,
     val redirectUris: List<String> = mutableListOf()
 ) {
-    val clientName: String = "${clientId}-${userId}"
+    val clientName: String = "$clientId-$userId"
 
     fun updateInfo(
         redirectUris: List<String> = this.redirectUris,

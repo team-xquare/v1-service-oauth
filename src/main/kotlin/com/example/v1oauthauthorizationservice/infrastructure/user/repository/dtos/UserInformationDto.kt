@@ -4,7 +4,6 @@ import java.time.LocalDate
 import java.util.UUID
 
 data class UserInformationDto(
-
     val id: UUID,
     val accountId: String,
     val name: String,

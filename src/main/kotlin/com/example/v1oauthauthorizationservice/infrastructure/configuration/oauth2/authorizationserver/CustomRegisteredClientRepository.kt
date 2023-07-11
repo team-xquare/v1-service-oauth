@@ -10,8 +10,6 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CustomRegisteredClientRepository(
@@ -23,14 +21,14 @@ class CustomRegisteredClientRepository(
         // Unused method
     }
 
-    //@Cacheable(cacheNames = [CacheNames.REGISTERED_CLIENT_CACHE_NAME], key = "#id")
+    @Cacheable(cacheNames = [CacheNames.REGISTERED_CLIENT_CACHE_NAME], key = "#id")
     override fun findById(id: String): RegisteredClient {
         val registeredClientEntity = registeredClientEntityRepository.findByIdOrNull(id.toUUID())
             ?: throw RegisteredClientNotFoundException(RegisteredClientNotFoundException.ID_NOT_FOUND_MESSAGE)
         return registeredClientMapper.toClient(registeredClientEntity)
     }
 
-    //@Cacheable(cacheNames = [CacheNames.REGISTERED_CLIENT_CACHE_NAME], key = "#clientId")
+    @Cacheable(cacheNames = [CacheNames.REGISTERED_CLIENT_CACHE_NAME], key = "#clientId")
     override fun findByClientId(clientId: String): RegisteredClient {
         val registeredClientEntity = registeredClientEntityRepository.findByClientId(clientId)
             ?: throw RegisteredClientNotFoundException(RegisteredClientNotFoundException.CLIENT_ID_NOT_FOUND_MESSAGE)

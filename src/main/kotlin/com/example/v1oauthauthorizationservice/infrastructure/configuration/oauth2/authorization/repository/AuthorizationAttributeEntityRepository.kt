@@ -7,4 +7,3 @@ import java.util.UUID
 interface AuthorizationAttributeEntityRepository : JpaRepository<AuthorizationAttributeEntity, UUID> {
     fun findByAuthorizationId(authorizationId: UUID): List<AuthorizationAttributeEntity>
 }
-
