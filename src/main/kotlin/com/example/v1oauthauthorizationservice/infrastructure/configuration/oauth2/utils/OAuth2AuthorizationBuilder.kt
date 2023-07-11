@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken
 import org.springframework.security.oauth2.core.OAuth2RefreshToken
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames
 import org.springframework.security.oauth2.core.oidc.OidcIdToken
+import org.springframework.security.oauth2.core.oidc.OidcScopes
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
@@ -54,7 +55,7 @@ object OAuth2AuthorizationBuilder {
                     it.tokenValue,
                     it.issuedAt,
                     it.expiredAt,
-                    mutableMapOf()
+                    mutableMapOf("clientId" to registeredClient.clientId as Any)
                 )
             )
         }
@@ -136,7 +137,8 @@ fun AccessTokenEntity.toOAuth2AccessToken() =
         OAuth2AccessToken.TokenType.BEARER,
         this.tokenValue,
         this.issuedAt,
-        this.expiredAt
+        this.expiredAt,
+        setOf(OidcScopes.OPENID)
     )
 
 private fun AuthorizationCodeEntity.toOAuth2AuthorizationCode() =
