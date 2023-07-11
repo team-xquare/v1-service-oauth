@@ -81,7 +81,6 @@ class OAuth2AuthorizationSecurityConfiguration(
             .builder()
             .authorizationEndpoint("/oauth2/authorize")
             .tokenEndpoint("/oauth2/token")
-            .oidcClientRegistrationEndpoint("/oauth2/client/registration")
             .oidcUserInfoEndpoint("/userinfo")
             .jwkSetEndpoint("/jwks")
             .build()
