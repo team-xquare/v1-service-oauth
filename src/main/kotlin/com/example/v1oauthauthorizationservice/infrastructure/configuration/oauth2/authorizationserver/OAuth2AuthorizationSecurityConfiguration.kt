@@ -2,7 +2,6 @@ package com.example.v1oauthauthorizationservice.infrastructure.configuration.oau
 
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.AuthenticationFilter
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.CustomExceptionHandlerFilter
-import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.authorization.repository.AccessTokenEntityRepository
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.jwk.JwkUtils
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.uuid.UuidUtils.toUUID
 import com.example.v1oauthauthorizationservice.infrastructure.user.repository.UserInformationRepository
@@ -71,14 +70,21 @@ class OAuth2AuthorizationSecurityConfiguration(
 
     private fun getUserInfoByAuthenticationContext() = { authenticationContext: OidcUserInfoAuthenticationContext ->
         val userInfo = userInformationRepository.findUserById(
-            authenticationContext.authorization.principalName.toUUID()
+            userId = authenticationContext.authorization.principalName.toUUID()
         )
         OidcUserInfo(objectMapper.convertValue(userInfo, Map::class.java) as Map<String, Any>)
     }
 
     @Bean
     fun authorizationServerSettings(): AuthorizationServerSettings {
-        return AuthorizationServerSettings.builder().build()
+        return AuthorizationServerSettings
+            .builder()
+            .authorizationEndpoint("/oauth2/authorize")
+            .tokenEndpoint("/oauth2/token")
+            .oidcClientRegistrationEndpoint("/oauth2/client/registration")
+            .oidcUserInfoEndpoint("/userinfo")
+            .jwkSetEndpoint("/jwks")
+            .build()
     }
 
     @Bean
