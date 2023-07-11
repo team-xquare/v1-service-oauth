@@ -14,14 +14,15 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.UUID
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.OAuth2AccessToken
-import org.springframework.security.oauth2.core.OAuth2AuthorizationCode
 import org.springframework.security.oauth2.core.OAuth2RefreshToken
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames
 import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 
 object OAuth2AuthorizationBuilder {
+
     fun AuthorizationEntity.toOAuth2Authorization(
         registeredClient: RegisteredClient,
         objectMapper: ObjectMapper
@@ -31,8 +32,7 @@ object OAuth2AuthorizationBuilder {
             .principalName(this.principalName)
             .id(this.id.toString())
 
-        val authorizationCodeEntityOrNull = this.authorizationCodeEntity
-        authorizationCodeEntityOrNull?.let {
+        this.authorizationCodeEntity?.let {
             builder.token(it.toOAuth2AuthorizationCode())
 
             if (it.state != null) {
@@ -40,18 +40,15 @@ object OAuth2AuthorizationBuilder {
             }
         }
 
-        val accessTokenEntityOrNull = this.accessTokenEntity
-        accessTokenEntityOrNull?.let {
+        this.accessTokenEntity?.let {
             builder.accessToken(it.toOAuth2AccessToken())
         }
 
-        val refreshTokenEntityOrNull = this.refreshTokenEntity
-        refreshTokenEntityOrNull?.let {
+        this.refreshTokenEntity?.let {
             builder.refreshToken(it.toOAuth2RefreshToken())
         }
 
-        val oidcIdTokenEntityOrNull = this.oidcIdTokenEntity
-        oidcIdTokenEntityOrNull?.let {
+        this.oidcIdTokenEntity?.let {
             builder.token(
                 OidcIdToken(
                     it.tokenValue,
@@ -62,9 +59,8 @@ object OAuth2AuthorizationBuilder {
             )
         }
 
-        val authorizationAttributeEntities = this.authorizationAttributeEntities
         val authorizationAttributeJsonNode =
-            authorizationAttributeEntities.toAuthorizationAttributeJsonNode(objectMapper)
+            this.authorizationAttributeEntities!!.toAuthorizationAttributeJsonNode(objectMapper)
 
         builder.attributes { t ->
             t.putAll(
@@ -77,28 +73,6 @@ object OAuth2AuthorizationBuilder {
 
         return builder.build()
     }
-
-    private fun AuthorizationCodeEntity.toOAuth2AuthorizationCode() =
-        OAuth2AuthorizationCode(
-            this.codeValue,
-            this.issuedAt,
-            this.expiredAt
-        )
-
-    private fun AccessTokenEntity.toOAuth2AccessToken() =
-        OAuth2AccessToken(
-            OAuth2AccessToken.TokenType.BEARER,
-            this.tokenValue,
-            this.issuedAt,
-            this.expiredAt
-        )
-
-    private fun RefreshTokenEntity.toOAuth2RefreshToken() =
-        OAuth2RefreshToken(
-            this.tokenValue,
-            this.issuedAt,
-            this.expiredAt,
-        )
 
     private fun List<AuthorizationAttributeEntity>.toAuthorizationAttributeJsonNode(objectMapper: ObjectMapper): JsonNode {
         val authorizationAttributes = objectMapper.createObjectNode()
@@ -156,3 +130,25 @@ object OAuth2AuthorizationBuilder {
         state = state
     )
 }
+
+fun AccessTokenEntity.toOAuth2AccessToken() =
+    OAuth2AccessToken(
+        OAuth2AccessToken.TokenType.BEARER,
+        this.tokenValue,
+        this.issuedAt,
+        this.expiredAt
+    )
+
+private fun AuthorizationCodeEntity.toOAuth2AuthorizationCode() =
+    OAuth2AuthorizationCode(
+        this.codeValue,
+        this.issuedAt,
+        this.expiredAt
+    )
+
+private fun RefreshTokenEntity.toOAuth2RefreshToken() =
+    OAuth2RefreshToken(
+        this.tokenValue,
+        this.issuedAt,
+        this.expiredAt,
+    )
