@@ -6,4 +6,5 @@ import java.util.UUID
 
 interface RedirectUriEntityRepository : CrudRepository<RedirectUriEntity, UUID> {
     fun findAllByRegisteredClientId(registeredClientId: UUID): List<RedirectUriEntity>
+    fun deleteByRegisteredClientId(registeredClientId: UUID)
 }

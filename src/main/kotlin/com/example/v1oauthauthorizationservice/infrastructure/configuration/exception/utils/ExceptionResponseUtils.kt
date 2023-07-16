@@ -5,7 +5,7 @@ import com.example.v1oauthauthorizationservice.domain.exception.BaseExceptionPro
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.dtos.ExceptionResponse
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.MediaType
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.http.HttpServletResponse
 
 object ExceptionResponseUtils {
     fun BaseExceptionProperty.sendErrorResponse(response: HttpServletResponse, objectMapper: ObjectMapper) {

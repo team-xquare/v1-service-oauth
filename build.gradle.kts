@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.6.7"
+    id("org.springframework.boot") version "3.0.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
@@ -17,9 +17,10 @@ repositories {
     mavenCentral()
 }
 
-extra["springCloudVersion"] = "2021.0.2"
+extra["springCloudVersion"] = "2022.0.1"
 
 dependencies {
+
     // jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
@@ -38,15 +39,17 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     // oauth
-    implementation("org.springframework.security:spring-security-oauth2-authorization-server:0.2.3")
+    implementation("org.springframework.security:spring-security-oauth2-authorization-server:1.0.3")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.security:spring-security-oauth2-client")
 
     // jpa
     implementation("org.springframework.data:spring-data-jpa")
     runtimeOnly("mysql:mysql-connector-java")
-    implementation("com.vladmihalcea:hibernate-types-52:2.16.2")
+    implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 
-    // http client
-    implementation("org.apache.httpcomponents:httpclient:4.5.13")
+    // OpenFeign
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4")
 
     // validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -61,6 +64,18 @@ dependencyManagement {
     }
 }
 
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
+}
+
+noArg {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -71,7 +86,6 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
 
 val ktlint: Configuration by configurations.creating
 

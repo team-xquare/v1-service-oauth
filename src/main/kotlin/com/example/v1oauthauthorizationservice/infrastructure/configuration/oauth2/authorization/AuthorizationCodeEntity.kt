@@ -2,16 +2,16 @@ package com.example.v1oauthauthorizationservice.infrastructure.configuration.oau
 
 import java.time.Instant
 import java.util.UUID
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.MapsId
-import javax.persistence.OneToOne
-import javax.persistence.Table
-import javax.validation.constraints.FutureOrPresent
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.MapsId
+import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
+import jakarta.validation.constraints.FutureOrPresent
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "tbl_authorization_code")
