@@ -39,6 +39,7 @@ class SecurityConfiguration {
         httpSecurity
             .authorizeHttpRequests { authorize ->
                 authorize
+                    .requestMatchers(HttpMethod.GET, "/oauth2/client").authenticated()
                     .requestMatchers(HttpMethod.POST, "/oauth2/client").authenticated()
                     .requestMatchers(HttpMethod.PATCH, "/oauth2/client/{client-id}").authenticated()
                     .requestMatchers(HttpMethod.GET, "/oauth2/client/{client-id}/secret").authenticated()

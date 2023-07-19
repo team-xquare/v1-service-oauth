@@ -5,6 +5,7 @@ import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentatio
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.UpdateClientRequest
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegenerateSecretResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegisterClientResponse
+import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.ClientsResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.UpdateClientResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -19,6 +20,11 @@ import org.springframework.web.bind.annotation.RestController
 class OAuthController(
     private val OAuthApi: OAuthApi
 ) {
+
+    @GetMapping("/client")
+    fun getClient(@RequestBody request: RegisterClientRequest): ClientsResponse {
+        return OAuthApi.getClient(request)
+    }
 
     @PostMapping("/client")
     fun registerClient(@RequestBody request: RegisterClientRequest): RegisterClientResponse {

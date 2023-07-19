@@ -2,12 +2,13 @@ package com.example.v1oauthauthorizationservice.domain.oauth.api
 
 import com.example.v1oauthauthorizationservice.domain.oauth.domain.RegisteredClientDto
 import com.example.v1oauthauthorizationservice.domain.oauth.spi.RegisteredClientSpi
-import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.exceptions.RegisteredClientAlreadyExistsException
 import com.example.v1oauthauthorizationservice.domain.security.spi.SecuritySpi
+import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.exceptions.RegisteredClientAlreadyExistsException
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.RegisterClientRequest
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.UpdateClientRequest
-import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegenerateSecretResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegisterClientResponse
+import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.ClientsResponse
+import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegenerateSecretResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.UpdateClientResponse
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -18,6 +19,19 @@ class OAuthApiImpl(
     private val registeredClientSpi: RegisteredClientSpi,
     private val securitySpi: SecuritySpi
 ) : OAuthApi {
+
+    override fun getClient(request: RegisterClientRequest): ClientsResponse {
+        val userId = securitySpi.getCurrentUserId()
+        return ClientsResponse(
+            registeredClientSpi.getByUserId(userId)
+                .map {
+                    ClientsResponse.ClientResponse(
+                        clientId = it.clientId,
+                        redirectUris = it.redirectUris
+                    )
+                }
+        )
+    }
 
     override fun registerClient(request: RegisterClientRequest): RegisterClientResponse {
 

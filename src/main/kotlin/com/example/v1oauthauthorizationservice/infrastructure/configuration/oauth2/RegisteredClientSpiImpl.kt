@@ -6,6 +6,7 @@ import com.example.v1oauthauthorizationservice.infrastructure.configuration.oaut
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.repository.RedirectUriEntityRepository
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.repository.RegisteredClientEntityRepository
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.mapper.RegisteredClientMapper
+import java.util.UUID
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,6 +32,10 @@ class RegisteredClientSpiImpl(
             uri = this,
             registeredClient = registeredClientEntity
         )
+
+    override fun getByUserId(userId: UUID) =
+        registeredClientEntityRepository.findByUserId(userId)
+            .map { registeredClientMapper.toDto(it) }
 
     override fun findByClientId(clientId: String) =
         registeredClientMapper.toDto(

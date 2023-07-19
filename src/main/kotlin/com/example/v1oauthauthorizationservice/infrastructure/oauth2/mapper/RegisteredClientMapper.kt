@@ -54,11 +54,11 @@ class RegisteredClientMapper(
 
     fun toDto(entity: RegisteredClientEntity) = entity.run {
         RegisteredClientDto(
-            id = id!!,
+            id = id,
             clientId = clientId,
             clientSecret = clientSecret,
             userId = userId,
-            redirectUris = getRedirectUrisByClientId(id!!)
+            redirectUris = getRedirectUrisByClientId(id)
         )
     }
 

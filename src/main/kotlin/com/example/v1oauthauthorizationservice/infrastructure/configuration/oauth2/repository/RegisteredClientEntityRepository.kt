@@ -6,5 +6,6 @@ import java.util.UUID
 
 interface RegisteredClientEntityRepository : CrudRepository<RegisteredClientEntity, UUID> {
     fun findByClientId(clientId: String): RegisteredClientEntity?
+    fun findByUserId(userId: UUID): List<RegisteredClientEntity>
     fun existsByClientId(clientId: String): Boolean
 }
