@@ -1,0 +1,4 @@
+config:
+  name: oauth
+  prefix: /oauth
+  service_type: be
