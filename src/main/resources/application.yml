@@ -8,7 +8,7 @@ spring:
   application:
     name: v1-oauth-service
   config:
-    import: optional:configserver:https://api.xquare.app/cloud-config/
+    import: ${CLOUD_CONFIG_IMPORT_URL:optional:configserver:https://api.xquare.app/cloud-config/}
   cloud:
     config:
       username: ${CLOUD_CONFIG_USERNAME}
