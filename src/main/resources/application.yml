@@ -13,5 +13,8 @@ spring:
     config:
       username: ${CLOUD_CONFIG_USERNAME}
       password: ${CLOUD_CONFIG_PASSWORD}
+  datasource:
+    driver-class-name: org.hibernate.dialect.MySQL57Dialect
+
 server:
   shutdown: graceful
