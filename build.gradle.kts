@@ -48,6 +48,9 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 
+    // Cloud Config
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
+
     // OpenFeign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4")
 
