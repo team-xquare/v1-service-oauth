@@ -16,5 +16,10 @@ spring:
       username: ${CLOUD_CONFIG_USERNAME}
       password: ${CLOUD_CONFIG_PASSWORD}
 
+oauth:
+  token:
+    access-token-expiration-by-hour: ${OAUTH_ACCESS_TOKEN_EXP:1}
+    refresh-token-expiration-by-day: ${OAUTH_REFRESH_TOKEN_EXP:14}
+
 server:
   shutdown: graceful
