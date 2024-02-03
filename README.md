@@ -5,5 +5,5 @@ OAuth는 인터넷 사용자들이 비밀번호를 제공하지 않고 다른 �
 
 https://team-xquare.notion.site/Xquare-OAuth-4f838dfd407c43e1bfe4aa56dd030991?pvs=4
 
-![image](https://github.com/team-xquare/v1-service-oauth/assets/81006587/85d23d0e-7c91-4d2f-b575-c94a1815415b)
+![image]([https://github.com/team-xquare/v1-service-oauth/assets/81006587/85d23d0e-7c91-4d2f-b575-c94a1815415b](https://team-xquare.notion.site/OAuth-0d625a7822664e6e9c7e3191a8470f21?pvs=4)https://team-xquare.notion.site/OAuth-0d625a7822664e6e9c7e3191a8470f21?pvs=4)
 
