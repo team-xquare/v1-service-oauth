@@ -48,7 +48,7 @@ class AuthenticationFilter(
     private fun setAuthenticationByHeader(request: HttpServletRequest) {
 
         val requestUserId = request.getHeader("Request-User-Id")
-        val requestUserAuthority = request.getHeader("Request-User-Authority")
+        val requestUserAuthority = request.getHeader("Request-User-Authorities")
         val requestUserRole = request.getHeader("Request-User-Role")
 
         val simpleGrantedAuthorities = requestUserAuthority.toList().let { authorities ->
