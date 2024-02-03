@@ -1,5 +1,6 @@
 package com.example.v1oauthauthorizationservice.infrastructure.configuration.security
 
+import com.example.v1oauthauthorizationservice.infrastructure.configuration.AuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -11,10 +12,14 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.access.intercept.AuthorizationFilter
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @EnableWebSecurity(debug = true)
 @Configuration
-class SecurityConfiguration {
+class SecurityConfiguration(
+    private val authenticationFilter: AuthenticationFilter
+) {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -35,6 +40,8 @@ class SecurityConfiguration {
             .headers().frameOptions().disable().and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+
+        httpSecurity.addFilterBefore(authenticationFilter, AuthorizationFilter::class.java)
 
         httpSecurity
             .authorizeHttpRequests { authorize ->
