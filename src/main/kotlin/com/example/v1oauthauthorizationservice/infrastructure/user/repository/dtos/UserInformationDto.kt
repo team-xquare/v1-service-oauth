@@ -12,5 +12,6 @@ data class UserInformationDto(
     val classNum: Int,
     val num: Int,
     val profileFileName: String?,
-    val password: String
+    val password: String,
+    val userRole: UserRole
 )
