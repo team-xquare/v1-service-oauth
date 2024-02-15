@@ -3,27 +3,24 @@ package com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentati
 import com.example.v1oauthauthorizationservice.domain.oauth.api.OAuthApi
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.RegisterClientRequest
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.UpdateClientRequest
+import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.ClientsResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegenerateSecretResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegisterClientResponse
-import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.ClientsResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.UpdateClientResponse
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.example.v1oauthauthorizationservice.infrastructure.user.repository.dtos.UserInformationDto
+import com.example.v1oauthauthorizationservice.infrastructure.user.security.AuthDetailsService
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/oauth2")
 class OAuthController(
-    private val OAuthApi: OAuthApi
+    private val OAuthApi: OAuthApi,
+    private val authDetailsService: AuthDetailsService
 ) {
 
     @GetMapping("/client")
-    fun getClient(@RequestBody request: RegisterClientRequest): ClientsResponse {
-        return OAuthApi.getClient(request)
+    fun getClient(): ClientsResponse {
+        return OAuthApi.getClient()
     }
 
     @PostMapping("/client")
@@ -39,5 +36,10 @@ class OAuthController(
     @GetMapping("/client/{client-id}/secret")
     fun regenerateSecret(@PathVariable("client-id") clientId: String): RegenerateSecretResponse {
         return OAuthApi.regenerateSecret(clientId)
+    }
+
+    @GetMapping("/userinfo/{account-id}")
+    fun getUserInfo(@PathVariable("account-id") accountId: String): UserInformationDto {
+        return authDetailsService.getUserInformation(accountId)
     }
 }
