@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import java.util.*
 
 @Component
 @Order(-100)
@@ -51,10 +52,9 @@ class AuthenticationFilter(
     }
 
     private fun setAuthenticationByHeader(request: HttpServletRequest) {
-
-        val requestUserId = request.getHeader("Request-User-Id")
-        val requestUserAuthority = request.getHeader("Request-User-Authorities")
-        val requestUserRole = request.getHeader("Request-User-Role")
+        var requestUserId = request.getHeader("Request-User-Id") ?: UUID.randomUUID().toString()
+        var requestUserAuthority = request.getHeader("Request-User-Authorities") ?: "STU"
+        var requestUserRole = request.getHeader("Request-User-Role") ?: "STU"
 
         val simpleGrantedAuthorities = requestUserAuthority.toList().let { authorities ->
             buildRequestAuthoritiesAndRole(requestUserRole, authorities)
