@@ -22,7 +22,6 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.util.*
 
 @Component
 @Order(-100)
@@ -52,16 +51,14 @@ class AuthenticationFilter(
     }
 
     private fun setAuthenticationByHeader(request: HttpServletRequest) {
-        var requestUserId = request.getHeader("Request-User-Id") ?: UUID.randomUUID().toString()
-        var requestUserAuthority = request.getHeader("Request-User-Authorities") ?: "STU"
-        var requestUserRole = request.getHeader("Request-User-Role") ?: "STU"
 
-        val authorityList = requestUserAuthority.toList()
-        val simpleGrantedAuthorities = if(authorityList.isNotEmpty()) {
-            buildRequestAuthoritiesAndRole(requestUserRole, authorityList)
+        val requestUserId = request.getHeader("Request-User-Id")
+        val requestUserAuthority = request.getHeader("Request-User-Authorities")
+        val requestUserRole = request.getHeader("Request-User-Role")
+
+        val simpleGrantedAuthorities = requestUserAuthority.toList().let { authorities ->
+            buildRequestAuthoritiesAndRole(requestUserRole, authorities)
                 .map { SimpleGrantedAuthority(it) }
-        } else {
-            listOf<SimpleGrantedAuthority>()
         }
 
         if (simpleGrantedAuthorities.isNotEmpty()) {
@@ -74,15 +71,6 @@ class AuthenticationFilter(
 
             SecurityContextHolder.getContext().authentication = authentication
         }
-    }
-
-    private fun buildRequestAuthoritiesAndRole(
-        requestUserRole: String,
-        requestUserAuthorities: List<String>
-    ): List<String> {
-        val authoritiesAndRoles = mutableListOf("ROLE_$requestUserRole")
-        requestUserAuthorities.forEach { authoritiesAndRoles.add(it) }
-        return authoritiesAndRoles
     }
 
     private fun setAuthenticationByAccessToken(accessToken: String) {
@@ -100,6 +88,15 @@ class AuthenticationFilter(
             tokenEntity.toOAuth2AccessToken(),
             authorities
         )
+    }
+
+    private fun buildRequestAuthoritiesAndRole(
+        requestUserRole: String,
+        requestUserAuthorities: List<String>
+    ): List<String> {
+        val authoritiesAndRoles = mutableListOf("ROLE_$requestUserRole")
+        requestUserAuthorities.forEach { authoritiesAndRoles.add(it) }
+        return requestUserAuthorities
     }
 
     private fun String.toList(): List<String> {
