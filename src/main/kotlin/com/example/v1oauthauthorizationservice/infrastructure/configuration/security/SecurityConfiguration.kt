@@ -52,7 +52,7 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.POST, "/oauth2/token").permitAll()
                     .requestMatchers(HttpMethod.GET, "/jwk").permitAll()
                     .requestMatchers(HttpMethod.GET, "/oauth2/authorize").authenticated()
-                    .requestMatchers(HttpMethod.GET, "/oauth2/userinfo").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/oauth2/userinfo").permitAll()
                     .anyRequest().authenticated()
             }
 
