@@ -56,9 +56,12 @@ class AuthenticationFilter(
         var requestUserAuthority = request.getHeader("Request-User-Authorities") ?: "STU"
         var requestUserRole = request.getHeader("Request-User-Role") ?: "STU"
 
-        val simpleGrantedAuthorities = requestUserAuthority.toList().let { authorities ->
-            buildRequestAuthoritiesAndRole(requestUserRole, authorities)
+        val authorityList = requestUserAuthority.toList()
+        val simpleGrantedAuthorities = if(authorityList.isNotEmpty()) {
+            buildRequestAuthoritiesAndRole(requestUserRole, authorityList)
                 .map { SimpleGrantedAuthority(it) }
+        } else {
+            listOf<SimpleGrantedAuthority>()
         }
 
         if (simpleGrantedAuthorities.isNotEmpty()) {
@@ -71,6 +74,15 @@ class AuthenticationFilter(
 
             SecurityContextHolder.getContext().authentication = authentication
         }
+    }
+
+    private fun buildRequestAuthoritiesAndRole(
+        requestUserRole: String,
+        requestUserAuthorities: List<String>
+    ): List<String> {
+        val authoritiesAndRoles = mutableListOf("ROLE_$requestUserRole")
+        requestUserAuthorities.forEach { authoritiesAndRoles.add(it) }
+        return authoritiesAndRoles
     }
 
     private fun setAuthenticationByAccessToken(accessToken: String) {
@@ -88,15 +100,6 @@ class AuthenticationFilter(
             tokenEntity.toOAuth2AccessToken(),
             authorities
         )
-    }
-
-    private fun buildRequestAuthoritiesAndRole(
-        requestUserRole: String,
-        requestUserAuthorities: List<String>
-    ): List<String> {
-        val authoritiesAndRoles = mutableListOf("ROLE_$requestUserRole")
-        requestUserAuthorities.forEach { authoritiesAndRoles.add(it) }
-        return requestUserAuthorities
     }
 
     private fun String.toList(): List<String> {
