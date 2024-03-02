@@ -36,6 +36,10 @@ class AuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        if (request.requestURI.contains("/oauth2/token")) {
+            filterChain.doFilter(request, response)
+            return
+        }
 
         request.getParameter("access_token")?.let { accessToken ->
             setAuthenticationByAccessToken(accessToken)
@@ -52,12 +56,12 @@ class AuthenticationFilter(
         val requestUserAuthority = request.getHeader("Request-User-Authorities")
         val requestUserRole = request.getHeader("Request-User-Role")
 
-        val simpleGrantedAuthorities = requestUserAuthority.toList().let { authorities ->
+        val simpleGrantedAuthorities = requestUserAuthority?.toList()?.let { authorities ->
             buildRequestAuthoritiesAndRole(requestUserRole, authorities)
                 .map { SimpleGrantedAuthority(it) }
         }
 
-        if (simpleGrantedAuthorities.isNotEmpty()) {
+        if (!simpleGrantedAuthorities.isNullOrEmpty()) {
             val user = User(
                 requestUserId,
                 "",
@@ -68,6 +72,7 @@ class AuthenticationFilter(
             SecurityContextHolder.getContext().authentication = authentication
         }
     }
+
 
     private fun setAuthenticationByAccessToken(accessToken: String) {
         val tokenEntity = accessTokenEntityRepository.findByTokenValue(accessToken)
