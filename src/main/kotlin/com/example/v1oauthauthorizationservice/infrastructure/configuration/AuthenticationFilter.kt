@@ -36,11 +36,6 @@ class AuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (request.requestURI.contains("/oauth2/token")) {
-            filterChain.doFilter(request, response)
-            return
-        }
-
         request.getParameter("access_token")?.let { accessToken ->
             setAuthenticationByAccessToken(accessToken)
             filterChain.doFilter(request, response)
