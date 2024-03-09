@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import org.hibernate.annotations.DynamicUpdate
 import java.util.*
 
-@Entity(name = "user")
+@Entity(name = "tbl_user")
 @DynamicUpdate
 class User (
     id: UUID? = null,
