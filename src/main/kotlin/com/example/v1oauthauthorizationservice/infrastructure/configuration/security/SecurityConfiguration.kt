@@ -1,6 +1,10 @@
 package com.example.v1oauthauthorizationservice.infrastructure.configuration.security
 
+import com.example.v1oauthauthorizationservice.global.config.filter.FilterConfig
+import com.example.v1oauthauthorizationservice.global.config.jwt.JwtTokenResolver
+import com.example.v1oauthauthorizationservice.global.config.jwt.TokenProvider
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.AuthenticationFilter
+import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.CustomExceptionHandlerFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -17,7 +21,10 @@ import org.springframework.security.web.access.intercept.AuthorizationFilter
 @EnableWebSecurity(debug = true)
 @Configuration
 class SecurityConfiguration(
-    private val authenticationFilter: AuthenticationFilter
+    private val authenticationFilter: AuthenticationFilter,
+    private val tokenProvider: TokenProvider,
+    private val tokenResolver: JwtTokenResolver,
+    private val customExceptionHandlerFilter: CustomExceptionHandlerFilter
 ) {
 
     @Bean
@@ -53,7 +60,15 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.GET, "/jwk").permitAll()
                     .requestMatchers(HttpMethod.GET, "/oauth2/authorize").authenticated()
                     .requestMatchers(HttpMethod.GET, "/oauth2/userinfo").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/user").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/user/reissue").authenticated()
+                    .requestMatchers(HttpMethod.PUT, "/user/update").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/user/myInfo").authenticated()
                     .anyRequest().authenticated()
+                    .and()
+
+                    .apply(FilterConfig(tokenProvider, tokenResolver, customExceptionHandlerFilter))
             }
 
         return httpSecurity.build()
