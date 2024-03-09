@@ -4,7 +4,7 @@ import com.example.v1oauthauthorizationservice.global.config.filter.FilterConfig
 import com.example.v1oauthauthorizationservice.global.config.jwt.JwtTokenResolver
 import com.example.v1oauthauthorizationservice.global.config.jwt.TokenProvider
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.AuthenticationFilter
-import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.CustomExceptionHandlerFilter
+import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.ExceptionHandlerFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -24,7 +24,7 @@ class SecurityConfiguration(
     private val authenticationFilter: AuthenticationFilter,
     private val tokenProvider: TokenProvider,
     private val tokenResolver: JwtTokenResolver,
-    private val customExceptionHandlerFilter: CustomExceptionHandlerFilter
+    private val exceptionHandlerFilter: ExceptionHandlerFilter
 ) {
 
     @Bean
@@ -68,7 +68,7 @@ class SecurityConfiguration(
                     .anyRequest().authenticated()
                     .and()
 
-                    .apply(FilterConfig(tokenProvider, tokenResolver, customExceptionHandlerFilter))
+                    .apply(FilterConfig(tokenProvider, tokenResolver, exceptionHandlerFilter))
             }
 
         return httpSecurity.build()
