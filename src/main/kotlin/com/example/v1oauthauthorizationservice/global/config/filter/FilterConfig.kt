@@ -2,7 +2,6 @@ package com.example.v1oauthauthorizationservice.global.config.filter
 
 import com.example.v1oauthauthorizationservice.global.config.jwt.JwtTokenResolver
 import com.example.v1oauthauthorizationservice.global.config.jwt.TokenProvider
-import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.CustomExceptionHandlerFilter
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.ExceptionHandlerFilter
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

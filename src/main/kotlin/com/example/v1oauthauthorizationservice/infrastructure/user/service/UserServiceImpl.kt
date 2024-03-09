@@ -50,7 +50,6 @@ class UserServiceImpl(
 
     @Transactional
     override fun signup(request: SignUpRequest) {
-
         userRepository.save(
             User(
                 studentName = request.studentName!!,
