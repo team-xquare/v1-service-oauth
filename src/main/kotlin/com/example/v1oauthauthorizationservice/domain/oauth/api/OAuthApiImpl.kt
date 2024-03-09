@@ -3,6 +3,7 @@ package com.example.v1oauthauthorizationservice.domain.oauth.api
 import com.example.v1oauthauthorizationservice.domain.oauth.domain.RegisteredClientDto
 import com.example.v1oauthauthorizationservice.domain.oauth.spi.RegisteredClientSpi
 import com.example.v1oauthauthorizationservice.domain.security.spi.SecuritySpi
+import com.example.v1oauthauthorizationservice.global.common.UserFacade
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.exceptions.RegisteredClientAlreadyExistsException
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.RegisterClientRequest
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.UpdateClientRequest
@@ -10,6 +11,7 @@ import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentatio
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegenerateSecretResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegisterClientResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.UpdateClientResponse
+import com.example.v1oauthauthorizationservice.infrastructure.user.service.UserService
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class OAuthApiImpl(
     private val registeredClientSpi: RegisteredClientSpi,
-    private val securitySpi: SecuritySpi
+    private val securitySpi: SecuritySpi,
+    private val userFacade: UserFacade
 ) : OAuthApi {
 
     override fun getClient(): ClientsResponse {
@@ -34,15 +37,17 @@ class OAuthApiImpl(
     }
 
     override fun registerClient(request: RegisterClientRequest): RegisterClientResponse {
+        val currentUser = userFacade.getCurrentUser()
 
         if (registeredClientSpi.existsByClientId(request.clientId)) {
             throw RegisteredClientAlreadyExistsException(RegisteredClientAlreadyExistsException.CLIENT_ID_ALREADY_EXISTS_MESSAGE)
         }
 
         val clientSecret = RegisteredClientDto.generateClientSecret()
+
         registeredClientSpi.save(
             RegisteredClientDto(
-                userId = securitySpi.getCurrentUserId(),
+                userId = currentUser.id!!,
                 clientId = request.clientId,
                 clientSecret = securitySpi.encode(clientSecret),
                 redirectUris = request.redirectUris
