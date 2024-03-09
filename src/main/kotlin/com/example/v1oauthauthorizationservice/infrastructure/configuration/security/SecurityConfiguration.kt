@@ -3,7 +3,6 @@ package com.example.v1oauthauthorizationservice.infrastructure.configuration.sec
 import com.example.v1oauthauthorizationservice.global.config.filter.FilterConfig
 import com.example.v1oauthauthorizationservice.global.config.jwt.JwtTokenResolver
 import com.example.v1oauthauthorizationservice.global.config.jwt.TokenProvider
-import com.example.v1oauthauthorizationservice.infrastructure.configuration.AuthenticationFilter
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.ExceptionHandlerFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,19 +15,14 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.access.intercept.AuthorizationFilter
 
 @EnableWebSecurity(debug = true)
 @Configuration
 class SecurityConfiguration(
-    private val authenticationFilter: AuthenticationFilter,
     private val tokenProvider: TokenProvider,
     private val tokenResolver: JwtTokenResolver,
     private val exceptionHandlerFilter: ExceptionHandlerFilter
 ) {
-
-    @Bean
-    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -46,8 +40,6 @@ class SecurityConfiguration(
             .headers().frameOptions().disable().and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
-        httpSecurity.addFilterBefore(authenticationFilter, AuthorizationFilter::class.java)
 
         httpSecurity
             .authorizeHttpRequests { authorize ->
@@ -73,4 +65,7 @@ class SecurityConfiguration(
 
         return httpSecurity.build()
     }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 }
