@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 
 @Validated
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/oauth2/user")
 class UserController(
     private val userService: UserService
 ) {
