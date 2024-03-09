@@ -4,7 +4,7 @@ import com.example.v1oauthauthorizationservice.infrastructure.configuration.Auth
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.exception.filter.CustomExceptionHandlerFilter
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.jwk.JwkUtils
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.uuid.UuidUtils.toUUID
-import com.example.v1oauthauthorizationservice.infrastructure.user.repository.UserInformationRepository
+import com.example.v1oauthauthorizationservice.infrastructure.user.repository.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.source.JWKSource
@@ -26,7 +26,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter
 
 @Configuration
 class OAuth2AuthorizationSecurityConfiguration(
-    private val userInformationRepository: UserInformationRepository,
+    private val userRepository: UserRepository,
     private val objectMapper: ObjectMapper,
     private val customOAuth2AuthorizationService: CustomOAuth2AuthorizationService,
     private val customExceptionHandlerFilter: CustomExceptionHandlerFilter,
@@ -69,7 +69,7 @@ class OAuth2AuthorizationSecurityConfiguration(
             }
 
     private fun getUserInfoByAuthenticationContext() = { authenticationContext: OidcUserInfoAuthenticationContext ->
-        val userInfo = userInformationRepository.findUserById(
+        val userInfo = userRepository.findUserById(
             userId = authenticationContext.authorization.principalName.toUUID()
         )
         OidcUserInfo(objectMapper.convertValue(userInfo, Map::class.java) as Map<String, Any>)
