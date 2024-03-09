@@ -2,12 +2,10 @@ package com.example.v1oauthauthorizationservice.domain.oauth.api
 
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.RegisterClientRequest
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.request.UpdateClientRequest
+import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.ClientsResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegenerateSecretResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.RegisterClientResponse
-import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.ClientsResponse
 import com.example.v1oauthauthorizationservice.infrastructure.oauth2.presentation.dto.response.UpdateClientResponse
-import com.example.v1oauthauthorizationservice.infrastructure.user.repository.dtos.UserInformationDto
-import java.util.UUID
 
 interface OAuthApi {
     fun getClient(): ClientsResponse
