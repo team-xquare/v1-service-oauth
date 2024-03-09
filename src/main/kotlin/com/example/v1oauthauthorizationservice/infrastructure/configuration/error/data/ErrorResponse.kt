@@ -1,6 +1,5 @@
 package com.example.v1oauthauthorizationservice.infrastructure.configuration.error.data
 
-import com.example.v1oauthauthorizationservice.domain.exception.BaseException
 import org.springframework.http.HttpStatus
 import org.springframework.validation.BindException
 import org.springframework.validation.FieldError
