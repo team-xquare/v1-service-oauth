@@ -9,16 +9,10 @@ class AuthDetails(
 ): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = ArrayList()
-
     override fun getPassword(): String = user.password
-
     override fun getUsername(): String = user.accountId
-
     override fun isAccountNonExpired(): Boolean = false
-
     override fun isAccountNonLocked(): Boolean = false
-
     override fun isCredentialsNonExpired(): Boolean = false
-
     override fun isEnabled(): Boolean = false
 }
