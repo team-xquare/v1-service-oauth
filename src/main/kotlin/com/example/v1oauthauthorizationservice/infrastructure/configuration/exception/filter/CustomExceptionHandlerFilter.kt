@@ -29,13 +29,12 @@ class CustomExceptionHandlerFilter(
             filterChain.doFilter(request, response)
         } catch (e: Exception) {
             e.printStackTrace()
-            logger.error("An error occurred in CustomExceptionHandlerFilter", e)
             when (val exception = e.convertToBaseExceptionIfPossible()) {
-                is BaseException -> exception.sendErrorResponse(response, objectMapper)
+                is BaseException -> exception
                 is OAuth2AuthorizationException -> AuthorizationException(exception.message)
                 is OAuth2AuthenticationException -> AuthenticationException(exception.message)
                 else -> InternalServerError(exception.message)
-            }
+            }.sendErrorResponse(response, objectMapper)
         }
     }
 }
