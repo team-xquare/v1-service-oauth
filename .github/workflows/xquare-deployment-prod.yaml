@@ -45,3 +45,6 @@ jobs:
             CLOUD_CONFIG_USERNAME=${{secrets.CLOUD_CONFIG_USERNAME}}
             CLOUD_CONFIG_IMPORT_URL=${{ secrets.CLOUD_CONFIG_IMPORT_URL }}
             PROFILE=prod
+            REFRESH_EXP=${{ secrets.REFRESH_EXP }}
+            ACCESS_EXP=${{ secrets.ACCESS_EXP }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
