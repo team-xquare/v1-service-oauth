@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 
 @Validated
 @RestController
-@RequestMapping("/oauth2/user")
+@RequestMapping("/oauth2")
 class UserController(
     private val userService: UserService
 ) {
@@ -35,7 +35,7 @@ class UserController(
         req: LoginRequest
     ): TokenResponse = userService.login(req)
 
-    @PostMapping
+    @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     fun signup(
         @RequestBody @Valid

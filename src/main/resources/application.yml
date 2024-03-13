@@ -7,6 +7,10 @@ spring:
     property-naming-strategy: SNAKE_CASE
     date-format: yyyy-MM-dd'T'HH:mm:ss
     time-zone: Asia/Seoul
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      adjust-dates-to-context-time-zone: true
   application:
     name: v1-oauth-service
   config:
@@ -27,3 +31,7 @@ oauth:
 
 server:
   shutdown: graceful
+jwt:
+  secret-key: ${JWT_SECRET}
+  access-exp: ${ACCESS_EXP}
+  refresh-exp: ${REFRESH_EXP}
