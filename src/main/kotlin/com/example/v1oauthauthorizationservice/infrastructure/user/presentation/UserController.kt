@@ -51,4 +51,9 @@ class UserController(
         request: ReissueRequest
     ): TokenResponse = userService.reissue(request)
 
+    @GetMapping("/duplicate")
+    fun duplicateAccountId(
+        @RequestParam("accountId") accountId: String
+    ): Boolean = userService.duplicate(accountId)
+
 }

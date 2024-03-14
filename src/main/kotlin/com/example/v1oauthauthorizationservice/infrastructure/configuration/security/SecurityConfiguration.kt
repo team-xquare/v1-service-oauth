@@ -57,6 +57,7 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.POST, "/oauth2/reissue").authenticated()
                     .requestMatchers(HttpMethod.PUT, "/oauth2/update").authenticated()
                     .requestMatchers(HttpMethod.GET, "/oauth2/myInfo").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/oauth2/duplicate").permitAll()
                     .anyRequest().authenticated()
                     .and()
 
