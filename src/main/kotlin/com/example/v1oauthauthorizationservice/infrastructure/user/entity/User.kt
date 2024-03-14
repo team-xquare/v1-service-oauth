@@ -3,11 +3,12 @@ package com.example.v1oauthauthorizationservice.infrastructure.user.entity
 import com.example.v1oauthauthorizationservice.infrastructure.user.presentation.dto.response.UserProfileResponse
 import jakarta.persistence.*
 import org.hibernate.annotations.DynamicUpdate
+import java.io.Serializable
 import java.util.*
 
 @Entity(name = "tbl_user")
 @DynamicUpdate
-class User (
+class User(
     id: UUID? = null,
     studentName: String,
     password: String,
@@ -15,7 +16,7 @@ class User (
     github: String,
     accountId: String,
     email: String
-) {
+) : Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
