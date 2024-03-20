@@ -18,7 +18,7 @@ class AuthDetails(
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = ArrayList()
     override fun getPassword(): String = user.password
-    override fun getUsername(): String = user.accountId
+    override fun getUsername(): String = user.id.toString();
     override fun isAccountNonExpired(): Boolean = false
     override fun isAccountNonLocked(): Boolean = false
     override fun isCredentialsNonExpired(): Boolean = false
