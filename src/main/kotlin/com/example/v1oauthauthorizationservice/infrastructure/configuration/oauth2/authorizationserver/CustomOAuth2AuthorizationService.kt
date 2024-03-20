@@ -23,7 +23,6 @@ import com.example.v1oauthauthorizationservice.infrastructure.configuration.oaut
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.oauth2.utils.OAuth2AuthorizationBuilder.toOAuth2Authorization
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.objectmapper.ObjectMapperConfiguration
 import com.example.v1oauthauthorizationservice.infrastructure.configuration.uuid.UuidUtils.toUUID
-import com.example.v1oauthauthorizationservice.infrastructure.configuration.uuid.exceptions.IllegalUuidStringException
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.annotation.Resource
 import org.slf4j.Logger
@@ -44,7 +43,6 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Transactional
 @Component
@@ -70,9 +68,7 @@ class CustomOAuth2AuthorizationService(
             saveTokensIfPresent(authorization, authorizationEntity)
         }
     }
-
-    private val logger: Logger = LoggerFactory.getLogger(CustomOAuth2AuthorizationService::class.java)
-
+    
     private fun saveAuthorizationAndAuthorizationCode(
         oAuth2Authorization: OAuth2Authorization
     ) {
@@ -83,13 +79,7 @@ class CustomOAuth2AuthorizationService(
 
         val authenticationName = SecurityContextHolder.getContext().authentication.name
 
-        val userId = try {
-            authenticationName.toUUID()
-        } catch (e: IllegalUuidStringException) {
-            logger.error("Failed to convert authenticationName to UUID: $authenticationName")
-            UUID
-                .randomUUID()
-        }
+        val userId = authenticationName.toUUID()
 
         val authorizationEntityToSave = buildAuthorizationEntity(oAuth2Authorization, registeredClientEntity, userId)
         val savedAuthorizationEntity = authorizationEntityRepository.save(authorizationEntityToSave)
@@ -155,7 +145,7 @@ class CustomOAuth2AuthorizationService(
             oidcIdTokenEntityRepository.save(oidcTokenEntity)
         }
 
-        authorizationCodeEntityRepository.deleteById(authorizationEntity.id!!)
+        authorizationCodeEntityRepository.deleteById(authorizationEntity.id)
     }
 
     private fun updateTokens(
